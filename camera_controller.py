@@ -1,5 +1,6 @@
 import os
 
+from presentation_controller import PresentationController
 from utils import detector_utils as detector_utils
 from train_classifier import define_three_block_model, INPUT_SHAPE, predict_hand_capture_gesture
 import cv2
@@ -112,6 +113,9 @@ if __name__ == '__main__':
     model = define_three_block_model()
     model.load_weights('trained_classifier_0/trained_classifier_0')
 
+    presentation_controller = PresentationController()
+    is_presenter_controller_started = False
+
     while True:
         ret, image_np = cap.read()
         cv2.imshow('original', image_np)
@@ -126,6 +130,9 @@ if __name__ == '__main__':
             print("Background captured")
         elif pressed_key == ord(' '):  # photo capture
             should_take_photo = True
+        elif pressed_key == ord('p'):
+            is_presenter_controller_started = not is_presenter_controller_started
+            time.sleep(2)
 
         if is_background_captured == 1 and frame_counter % frame_divisor == 0:
             # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
@@ -184,7 +191,10 @@ if __name__ == '__main__':
                     if image_np is not None:
                         cv2.imshow('Single-Threaded Detection',
                                    image_np)
-                        print(predict_hand_capture_gesture(model, image_np))
+                        predicted_hand_gesture = predict_hand_capture_gesture(model, image_np)
+                        # print(predicted_hand_gesture, end=',')
+                        if is_presenter_controller_started:
+                            presentation_controller.add_gesture(predicted_hand_gesture)
                 except Exception:
                     print("cv2.imshow failed")
 
