@@ -195,6 +195,16 @@ if __name__ == '__main__':
                         # print(predicted_hand_gesture, end=',')
                         if is_presenter_controller_started:
                             presentation_controller.add_gesture(predicted_hand_gesture)
+                            if predicted_hand_gesture == 'pointer':
+                                # center_pos = detector_utils.get_center_pos_of_bounding_box(boxes, im_width, im_height)
+                                # print("Center pos:", center_pos)
+                                # relative_center_pos = (center_pos[0] / im_width, center_pos[1] / im_height)
+                                # presentation_controller.set_current_relative_pointer_pos(relative_center_pos)
+                                pos = detector_utils.get_left_and_top_pos_of_first_bounding_box(boxes, im_width, im_height)
+                                relative_pos = (pos[0] / im_width, pos[1] / im_height)
+                                print(relative_pos)
+                                presentation_controller.set_current_relative_pointer_pos(relative_pos)
+
                 except Exception:
                     print("cv2.imshow failed")
 

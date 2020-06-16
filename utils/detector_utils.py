@@ -84,6 +84,19 @@ def cut_hand_bounding_box_from_image(num_hands_detect, score_thresh, scores, box
     return None
 
 
+def get_center_pos_of_bounding_box(boxes, im_width, im_height):
+    (left, right, top, bottom) = (boxes[0][1] * im_width, boxes[0][3] * im_width,
+                                  boxes[0][0] * im_height, boxes[0][2] * im_height)
+    print("L:", left, "Top:", top)
+    return (right - left, bottom - top)
+
+
+def get_left_and_top_pos_of_first_bounding_box(boxes, im_width, im_height):
+    (left, right, top, bottom) = (boxes[0][1] * im_width, boxes[0][3] * im_width,
+                                  boxes[0][0] * im_height, boxes[0][2] * im_height)
+    return (left, top)
+
+
 # Show fps value on image.
 def draw_fps_on_image(fps, image_np):
     cv2.putText(image_np, fps, (20, 50),
