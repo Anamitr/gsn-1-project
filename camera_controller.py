@@ -111,7 +111,7 @@ if __name__ == '__main__':
     should_take_photo = False
 
     model = define_three_block_model()
-    model.load_weights('trained_classifier_0/trained_classifier_0')
+    model.load_weights('trained_classifier_1/trained_classifier_1')
 
     presentation_controller = PresentationController()
     is_presenter_controller_started = False
@@ -131,6 +131,7 @@ if __name__ == '__main__':
         elif pressed_key == ord(' '):  # photo capture
             should_take_photo = True
         elif pressed_key == ord('p'):
+            print('Starting presenter mode')
             is_presenter_controller_started = not is_presenter_controller_started
             time.sleep(2)
 

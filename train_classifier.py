@@ -22,14 +22,12 @@ import numpy as np
 import cv2
 import tensorflow as tf
 
-# import tuning as tuning
-
 dataset_home = 'db/'
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(gpus[0], True)
 
-HAND_GESTURES = ['right', 'play', 'left', 'close', 'pointer', 'open', 'volume_up', 'volume_down']
+HAND_GESTURES = ['right', 'play', 'left', 'close', 'pointer', 'open', 'volume_up']
 HAND_GESTURES = sorted(HAND_GESTURES)
 
 INPUT_SHAPE = (200, 200, 3)
@@ -174,13 +172,13 @@ def caclulate_model():
                                   use_multiprocessing=True, callbacks=keras_callbacks)
     model.summary()
     model.save("latest_model.h5")
-    model.save("trained_models/model " + str(datetime.now()) + ".h5")
+    # model.save("trained_models/model " + str(datetime.now()) + ".h5")
 
     # evaluate model
     _, acc = model.evaluate_generator(test_it, steps=len(test_it), verbose=0)
     print('> %.3f' % (acc * 100.0))
     # learning curves
-    summarize_diagnostics(history)
+    # summarize_diagnostics(history)
 
     return model, history
 
@@ -195,29 +193,29 @@ def test_one_example(model: tf.keras.Model, img_path: str):
 def run_tests(model: tf.keras.Model):
     print('Train data tests:')
     print('Right: ', end='')
-    test_one_example(model, 'db/test/right/2.jpg')
+    test_one_example(model, 'db/test/right/6.jpg')
     test_one_example(model, 'db/test/right/8.jpg')
     print('Left: ', end='')
-    test_one_example(model, 'db/test/left/3.jpg')
-    test_one_example(model, 'db/test/left/11.jpg')
+    test_one_example(model, 'db/test/left/7.jpg')
+    test_one_example(model, 'db/test/left/10.jpg')
     print('Play: ', end='')
-    test_one_example(model, 'db/test/play/7.jpg')
-    test_one_example(model, 'db/test/play/10.jpg')
+    test_one_example(model, 'db/test/play/3.jpg')
+    test_one_example(model, 'db/test/play/13.jpg')
     print('Close: ', end='')
     test_one_example(model, 'db/test/close/8.jpg')
     test_one_example(model, 'db/test/close/23.jpg')
     print('Pointer: ', end='')
+    test_one_example(model, 'db/test/pointer/1.jpg')
     test_one_example(model, 'db/test/pointer/3.jpg')
-    test_one_example(model, 'db/test/pointer/7.jpg')
     print('Open: ', end='')
-    test_one_example(model, 'db/test/open/1.jpg')
     test_one_example(model, 'db/test/open/3.jpg')
+    test_one_example(model, 'db/test/open/7.jpg')
     print('Volume up: ', end='')
     test_one_example(model, 'db/test/volume_up/4.jpg')
     test_one_example(model, 'db/test/volume_up/5.jpg')
-    print('Volume down: ', end='')
-    test_one_example(model, 'db/test/volume_down/2.jpg')
-    test_one_example(model, 'db/test/volume_down/9.jpg')
+    # print('Volume down: ', end='')
+    # test_one_example(model, 'db/test/volume_down/2.jpg')
+    # test_one_example(model, 'db/test/volume_down/9.jpg')
 
 
 def convert_prediction_array_to_gesture_name(prediction: np.ndarray):
@@ -233,7 +231,7 @@ def predict_hand_capture_gesture(model: tf.keras.Model, image: np.ndarray):
 # prepare_dataset()
 # model, history = caclulate_model()
 # run_tests(model)
-# model.save_weights('trained_classifier_0')
+# model.save_weights('trained_classifier_1')
 
-model = define_three_block_model()
-model.load_weights('trained_classifier_0/trained_classifier_0')
+# model = define_three_block_model()
+# model.load_weights('trained_classifier_0/trained_classifier_0')

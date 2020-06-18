@@ -21,6 +21,7 @@ class PresentationController:
         self.mouse = pynput.mouse.Controller()
         self.gesture_queue = []
         self.volume = 50
+        self.set_volume(self.volume)
         self.is_pointer_on = False
         self.pointer_relative_position = (50, 50)
         pass
@@ -61,7 +62,7 @@ class PresentationController:
             self.keyboard.release('k')
         elif move_to_apply == 'volume_up':
             self.raise_volume()
-        elif move_to_apply == 'volume_down':
+        elif move_to_apply == 'volume_down' or move_to_apply == 'open':     # 'volume_down' gesture wasn't working well
             self.lower_volume()
         elif move_to_apply == 'pointer':
             self.handle_pointer()
